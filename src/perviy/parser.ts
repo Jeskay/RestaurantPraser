@@ -14,7 +14,11 @@ class Parser {
         return await this.browser.newPage()
     }
 
-    public async fetchData() {
+    /**
+     * fetches data (autoscroll for dynamic data is not supported)
+     * @param limit maximum amount of items to scrape from category
+     */
+    public async fetchData(limit: number = 10) {
         const page = await this.init();
         await page.goto(this.url ,{waitUntil: 'domcontentloaded'})
         await page.waitForSelector('.cd-dropdown-wrapper > .cd-dropdown-trigger')
@@ -43,7 +47,6 @@ class Parser {
                 }
                 await button.click()
                 await page.waitForNavigation({waitUntil: 'domcontentloaded'})
-                const limit = 10
                 console.log("1")
                 for (let count = 0; count < limit; count++) {
                     await page.waitForSelector(".product-product_card > a")
